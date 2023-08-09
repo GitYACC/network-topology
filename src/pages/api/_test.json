@@ -1,0 +1,36 @@
+{
+    "nodes": [
+        {
+            "id": "computer1",
+            "label": "Computer 1",
+            "device": "computer"
+        },
+        {
+            "id": "fax1",
+            "label": "Fax 1",
+            "device": "fax"
+        },
+        {
+            "id": "fax2",
+            "label": "Fax 2",
+            "device": "fax"
+        }
+    ],
+    "links": [
+        {
+            "source": "computer1",
+            "target": "fax1",
+            "type": "one-way"
+        },
+        {
+            "source": "computer1",
+            "target": "fax2",
+            "type": "one-way"
+        },
+        {
+            "source": "fax1",
+            "target": "fax2",
+            "type": "two-way"
+        }
+    ]
+}
