@@ -2,11 +2,15 @@ import { Switch } from '@headlessui/react'
 import { Icon, Moon, Sun, ThreeDBox } from "./_svg"
 import { Dispatch, SetStateAction } from 'react'
 
-interface NavProps { systemTheme: boolean, setSystemTheme: Dispatch<SetStateAction<boolean>> }
+interface NavProps { 
+    systemTheme: boolean, 
+    setSystemTheme: Dispatch<SetStateAction<boolean>>,
+    signOut: () => void
+}
 export default function Navigation(props: NavProps) {
     return (
-        <nav className="flex relative top-0 mb-2">
-                <a className={`flex gap-2 text-lg ${props.systemTheme ? "bg-gray-900 text-white" : "bg-gray-100"} m-5 ml-10 p-3 rounded-lg cursor-pointer`}>
+        <nav className="flex relative top-0">
+                <a className={`flex gap-2 text-lg ${props.systemTheme ? "bg-gray-900 text-white" : "bg-gray-100"} m-5 ml-10 p-2 px-3 rounded-lg cursor-pointer`}>
                     <Icon 
                         fill={props.systemTheme ? "black" : "white"}
                         stroke={props.systemTheme ? "white" : "black"}
@@ -16,14 +20,16 @@ export default function Navigation(props: NavProps) {
                 <div className="absolute flex right-0">
                     <a 
                         href="/docs"
-                        className={`text-lg m-5 p-3 cursor-pointer ${props.systemTheme ? "hover:bg-gray-900 text-white" : "hover:bg-gray-100"} hover:rounded-lg`}
+                        className={`group text-lg m-5 p-2 cursor-pointer ${props.systemTheme ? "hover:text-blue-700 text-white" : "hover:text-blue-700"} rounded-lg`}
                     >
                         <span 
                             className="flex relative gap-2 pr-1"
                         >
                             <div className="mt-1">
                                 <ThreeDBox 
+                                    fillClassName="group-hover:fill-blue-700"
                                     fill={props.systemTheme ? "white" : "black"}
+                                    strokeClassName="group-hover:stroke-blue-700"
                                     stroke={props.systemTheme ? "white" : "black"}
                                 />
                             </div>
@@ -33,7 +39,7 @@ export default function Navigation(props: NavProps) {
                     <Switch
                         checked={props.systemTheme}
                         onChange={props.setSystemTheme}
-                        className={`relative flex w-16 h-9 p-1 rounded-3xl ${props.systemTheme ? "bg-gray-900" : "bg-gray-100"} mb-8 mt-7 ml-5 mr-10 pl-1`}
+                        className={`relative flex w-16 h-9 p-1 rounded-3xl ${props.systemTheme ? "bg-gray-900" : "bg-gray-100"} m-6 pl-1`}
                     >
                         {({checked}) => (
                             <span 
@@ -47,6 +53,14 @@ export default function Navigation(props: NavProps) {
                             </span>
                         )}
                     </Switch>
+                    <div className={`border-l-[1px] ${props.systemTheme ? 'border-gray-900' : 'border-gray-200'}`}>
+                        <button 
+                            onClick={() => props.signOut()}
+                            className={`text-lg m-5 ml-9 mr-9 p-2 rounded-lg font-semibold ${props.systemTheme ?  "text-white hover:text-blue-700" : "hover:text-blue-700"}`}
+                        >
+                            Sign Out
+                        </button>
+                    </div>
                 </div>
             </nav>
     )

@@ -15,3 +15,39 @@ div#__next {
 main {
     @apply h-full;
 }
+
+.api-box {
+    @apply flex rounded-lg w-full shadow-md bg-white p-6
+}
+
+.py-keyword {
+    @apply text-purple-500 after:content-['\00a0'] before:content-['\00a0']
+}
+
+.py-method {
+    @apply text-blue-500 after:content-["("] after:text-gray-600 before:content-["."] before:text-gray-600
+}
+
+.py-string {
+    @apply text-amber-800/75 after:content-["'"] before:content-["'"]
+}
+
+.code-empty {
+    @apply invisible
+}
+
+.tab-1 {
+    @apply pl-10
+}
+
+.tab-2 {
+    @apply pl-20
+}
+
+.tab-3 {
+    @apply pl-[7.5rem]
+}
+
+.tab-4 {
+    @apply pl-40
+}

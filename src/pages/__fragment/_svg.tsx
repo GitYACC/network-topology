@@ -1,7 +1,7 @@
-interface SVGProps {fill: string, stroke: string}
+interface SVGProps {fillClassName?: string, fill: string, strokeClassName?: string, stroke: string, className?: string}
 export function Icon(props: SVGProps) {
     return (
-        <svg width="20px" height="20px" viewBox="0 0 24 24" fill={props.fill} xmlns="http://www.w3.org/2000/svg" className="m-1">
+        <svg width="20px" height="20px" viewBox="0 0 24 24" fill={props.fill} xmlns="http://www.w3.org/2000/svg" className={`m-1 ${props.className}`}>
             <circle cx="18" cy="5" r="3" stroke={props.stroke} stroke-width="2"/>
             <circle cx="18" cy="19" r="3" stroke={props.stroke} stroke-width="2"/>
             <circle cx="6" cy="12" r="3" stroke={props.stroke} stroke-width="2"/>
@@ -35,8 +35,8 @@ export function Sun() {
 export function ThreeDBox(props: SVGProps) {
     return (
         <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 13V21L5 16V8L12 3L19 8L12 13Z" fill={props.fill} fill-opacity="0.5"/>
-            <path d="M12 21V13M12 21L5.83752 16.5982C5.42695 16.305 5.22166 16.1583 5.11083 15.943C5 15.7276 5 15.4753 5 14.9708V8M12 21L18.1625 16.5982C18.573 16.305 18.7783 16.1583 18.8892 15.943C19 15.7276 19 15.4753 19 14.9708V8M12 13L5 8M12 13L19 8M5 8L10.8375 3.83034C11.3989 3.42938 11.6795 3.2289 12 3.2289C12.3205 3.2289 12.6011 3.42938 13.1625 3.83034L19 8" stroke={props.stroke} stroke-width="1.2" stroke-linejoin="round"/>
+            <path className={props.fillClassName} d="M12 13V21L5 16V8L12 3L19 8L12 13Z" fill={props.fill} fill-opacity="0.5"/>
+            <path className={props.strokeClassName} d="M12 21V13M12 21L5.83752 16.5982C5.42695 16.305 5.22166 16.1583 5.11083 15.943C5 15.7276 5 15.4753 5 14.9708V8M12 21L18.1625 16.5982C18.573 16.305 18.7783 16.1583 18.8892 15.943C19 15.7276 19 15.4753 19 14.9708V8M12 13L5 8M12 13L19 8M5 8L10.8375 3.83034C11.3989 3.42938 11.6795 3.2289 12 3.2289C12.3205 3.2289 12.6011 3.42938 13.1625 3.83034L19 8" stroke={props.stroke} stroke-width="1.2" stroke-linejoin="round"/>
         </svg>
     )
 }
@@ -95,9 +95,9 @@ export function JSONIcon(props: SVGProps) {
     )
 }
 
-export function Plus() {
+export function Plus(className?: string) {
     return (
-        <svg fill="#000000" width="20px" height="20px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <svg className={className} fill="#000000" width="20px" height="20px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path 
                 d="M5,12H19M12,5V19" 
                 fill="none"

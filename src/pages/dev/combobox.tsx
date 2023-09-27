@@ -67,6 +67,7 @@ export default function MyCombobox() {
                 >
                     {({selected, active}) => (
                         <>
+                            {active ? <>active</> : <>not active</>}
                             {selected ? <CheckIcon className="w-4" /> : <CheckIcon className="w-4 invisible" />}
                             {person.name}
                         </>

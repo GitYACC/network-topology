@@ -1,9 +1,10 @@
 import { useSession } from "next-auth/react"
-import Home from "./__callback/docs/authorized"
-import SignIn from "./__callback/unauthorized"
+import SignIn from "../__callback/unauthorized"
+import Home from "../__callback/docs/node-authorized"
 
+export default function NodeDocs() {
+    
 
-export default function Documentation() {
     const {data: session, status} = useSession()
 
     if(status == "loading") {

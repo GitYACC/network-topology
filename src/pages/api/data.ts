@@ -2,13 +2,19 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { TopologyJSON, Device, Method, ApiExecutor } from "./_apiMethodHandler"
 import fs from "fs"
 import { cwd } from 'process'
+import { authOptions } from './auth/[...nextauth]'
+import { getServerSession } from 'next-auth'
 
 
 export async function getData(): Promise<TopologyJSON> {
     return await (await fetch(
         "http://localhost:3000/api/data", 
         {
-            method: "GET"
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer admin`
+            }
         }
     )).json() as TopologyJSON
 }
@@ -19,7 +25,8 @@ export async function setData(posts: TopologyJSON) {
         {
             method: "POST", 
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": `Bearer admin`
             },
             body: JSON.stringify({
                 nodes: posts.nodes,
@@ -29,11 +36,16 @@ export async function setData(posts: TopologyJSON) {
     )
 }
 
-export async function resetData() {
+export async function resetData(token: string) {
+
     return await fetch(
         "http://localhost:3000/api/data",
         {
-            method: "DELETE"
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer admin`
+            }
         }
     )
 }
@@ -75,12 +87,18 @@ function DELETE(req: NextApiRequest, res: NextApiResponse) {
     res.status(200).json({nodes: [], links: []})
 }
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+    const session = await getServerSession(req, res, authOptions)
+
     var methods = [
         new Method("POST", POST),
         new Method("GET", GET),
         new Method("DELETE", DELETE)
     ]
 
-    new ApiExecutor(...methods).execute(req, res)
+    if(session || req.headers.authorization == "Bearer admin") {
+        new ApiExecutor(...methods).execute(req, res)
+    } else {
+        res.send({error: "invalid session"})
+    }
 }

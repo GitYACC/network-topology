@@ -1,6 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { Device, Method, ApiExecutor } from "./_apiMethodHandler"
 import { getData, setData } from './data'
+import { getServerSession } from 'next-auth'
+import { authOptions } from './auth/[...nextauth]'
 
 
 
@@ -16,17 +18,15 @@ async function POST(req: NextApiRequest, res: NextApiResponse) {
     let id = req.body.id === undefined ? Date.now() : req.body.id
     let label = req.body.label === undefined ? "Unnamed" : req.body.label
 
-    posts.nodes.push({
+    let node = {
         id: id as string,
         device: req.body.device as string,
         label: label as string
-    })
+    }
 
+    posts.nodes.push(node)
     await setData(posts)
-
-    var posts = await getData()
-    //res.status(200).json({nodes: posts.nodes})
-    res.status(200).json(posts)
+    res.status(200).json(node)
 }
 
 
@@ -42,9 +42,9 @@ async function GET(req: NextApiRequest, res: NextApiResponse) {
             }
         }
 
-        res.status(500).json({error: "invalid device id"})
+        res.status(400).json({error: "invalid device id"})
     } else {
-        res.status(200).json({nodes: posts.nodes})
+        res.status(400).json({error: "id parameter required"})
     }
 }
 
@@ -87,12 +87,18 @@ async function DELETE(req: NextApiRequest, res: NextApiResponse) {
 
 
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+    const session = await getServerSession(req, res, authOptions)
+
     var methods = [
         new Method("POST", POST),
         new Method("GET", GET),
         new Method("DELETE", DELETE)
     ]
 
-    new ApiExecutor(...methods).execute(req, res)
+    if(session || req.headers.authorization == "Bearer admin") {
+        new ApiExecutor(...methods).execute(req, res)
+    } else {
+        res.send({error: "invalid session"})
+    }
 }
